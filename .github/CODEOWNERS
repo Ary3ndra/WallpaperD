@@ -1,0 +1,4 @@
+# Changes to CI/CD workflows always need the maintainer's review before merging.
+# Combined with branch protection's "Require review from Code Owners", this means
+# nobody can merge a workflow change into a protected branch without @Ary3ndra's approval.
+/.github/workflows/ @Ary3ndra
