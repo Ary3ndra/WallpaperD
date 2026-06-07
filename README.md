@@ -1,4 +1,4 @@
-# Wallpaper Changer (Android)
+# WallpaperD (Android)
 
 Android port of the GNOME `gnome-wallpaper-changer` extension. Pluggable wallpaper sources,
 timer-based rotation, cache that clears as images are consumed. Built to sit near-zero on the
@@ -117,7 +117,7 @@ Nothing to set up.
 1. Create a keystore once and back it up. Android will not update an app signed with a different
    key, so losing it means users must reinstall.
    ```bash
-   keytool -genkey -v -keystore wallchanger.jks -alias wallchanger \
+   keytool -genkey -v -keystore wallpaperd.jks -alias wallpaperd \
      -keyalg RSA -keysize 2048 -validity 10000
    ```
 2. `cp keystore.properties.template keystore.properties` and fill in the four values.
@@ -134,7 +134,7 @@ You submit source + metadata; F-Droid builds and signs. Steps:
 1. Push to a public Git repo with the MIT LICENSE present.
 2. Tag the release commit: `git tag v1.0.0 && git push --tags`.
 3. Submit via the fdroiddata Submission Queue (reviewer does the rest) or open a merge request
-   adding `metadata/org.piarsenal.wallchanger.yml` (sample in `fdroid/`). Edit the Repo URL.
+   adding `metadata/org.piarsenal.wallpaperd.yml` (sample in `fdroid/`). Edit the Repo URL.
 4. Bump `versionCode` (and tag) for each update.
 
 The `dependenciesInfo { includeInApk/Bundle = false }` block is already set for reproducible
