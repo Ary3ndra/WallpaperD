@@ -15,7 +15,7 @@ Intended to be open-sourced (MIT) and shipped on F-Droid eventually.
 - minSdk 26, compileSdk/targetSdk 35, JDK 17 (AGP 8.7 requires exactly 17)
 - WorkManager (scheduling), DataStore (settings), Room (cache index + history)
 - OkHttp + kotlinx.serialization (network/JSON), Coil (image previews), DocumentFile (SAF)
-- Package root: `org.piarsenal.wallchanger`
+- Package root: `org.piarsenal.wallpaperd`
 
 ## Build / run / debug
 ```bash

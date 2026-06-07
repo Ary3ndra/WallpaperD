@@ -18,11 +18,11 @@ val keystoreProps = Properties().apply {
 }
 
 android {
-    namespace = "org.piarsenal.wallchanger"
+    namespace = "org.piarsenal.wallpaperd"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "org.piarsenal.wallchanger"
+        applicationId = "org.piarsenal.wallpaperd"
         minSdk = 26
         targetSdk = 35
         versionCode = 1

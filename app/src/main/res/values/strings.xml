@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Wallpaper Changer</string>
+    <string name="app_name">WallpaperD</string>
 
     <!-- Notification channel -->
     <string name="channel_name">Wallpaper changes</string>
@@ -13,7 +13,7 @@
     <string name="nav_help">Help</string>
 
     <!-- Home -->
-    <string name="home_title">Wallpaper Changer</string>
+    <string name="home_title">WallpaperD</string>
     <string name="home_auto">Auto-change</string>
     <string name="home_add_source_first">Add a source first</string>
     <string name="home_every_minutes">Every %1$d min</string>
