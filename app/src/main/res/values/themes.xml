@@ -1,0 +1,4 @@
+<resources>
+    <!-- Base theme. Material3 dynamic color is applied in Compose at runtime. -->
+    <style name="Theme.WallpaperChanger" parent="android:Theme.Material.NoActionBar" />
+</resources>

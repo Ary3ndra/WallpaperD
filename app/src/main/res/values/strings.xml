@@ -1,0 +1,72 @@
+<resources>
+    <string name="app_name">Wallpaper Changer</string>
+
+    <!-- Notification channel -->
+    <string name="channel_name">Wallpaper changes</string>
+    <string name="channel_desc">Notifies when the wallpaper is rotated</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_sources">Sources</string>
+    <string name="nav_history">History</string>
+    <string name="nav_settings">Settings</string>
+    <string name="nav_help">Help</string>
+
+    <!-- Home -->
+    <string name="home_title">Wallpaper Changer</string>
+    <string name="home_auto">Auto-change</string>
+    <string name="home_add_source_first">Add a source first</string>
+    <string name="home_every_minutes">Every %1$d min</string>
+    <string name="home_paused">Paused</string>
+    <string name="home_status">Status</string>
+    <string name="home_active_sources">%1$d active source(s)</string>
+    <string name="home_battery_note">Changes run in short windows the system schedules. Nothing stays awake between changes.</string>
+    <string name="home_change_now">Change now</string>
+    <string name="home_changing">Changing…</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_interval">Change interval</string>
+    <string name="settings_interval_note">Minimum is 15 min. The system runs the job in maintenance windows, so the exact moment can drift. That drift is what keeps battery use near zero.</string>
+    <string name="settings_only_wifi">Only on Wi-Fi</string>
+    <string name="settings_only_charging">Only while charging</string>
+    <string name="settings_apply_home">Apply to home screen</string>
+    <string name="settings_apply_lock">Apply to lock screen</string>
+    <string name="settings_notify">Notify on change</string>
+    <string name="settings_avoid_repeats">Avoid immediate repeats</string>
+    <string name="settings_prefetch">Prefetch next wallpaper</string>
+    <string name="settings_cache">Downloaded cache</string>
+    <string name="settings_cache_size">%1$s MB on disk</string>
+    <string name="settings_delete_cache">Delete cache</string>
+
+
+    <string name="settings_cache_limit">Cache limit</string>
+    <string name="settings_cache_unit_mb">MB</string>
+    <string name="settings_cache_unit_gb">GB</string>
+    <string name="settings_diagnostics">Diagnostics log</string>
+    <string name="settings_logs_empty">No log entries yet.</string>
+    <string name="settings_refresh">Refresh</string>
+    <string name="settings_clear_logs">Clear log</string>
+    <string name="settings_logs_hint">If a source isn\'t working, the reason appears here.</string>
+
+    <!-- Help -->
+    <string name="help_title">Help</string>
+    <string name="help_what_t">What this app does</string>
+    <string name="help_what_b">It changes your phone wallpaper automatically, on a timer, from sources you choose. You can also tap Change now any time.</string>
+    <string name="help_sources_t">Sources</string>
+    <string name="help_sources_b">A source is where pictures come from. Local folder uses photos already on your phone (works offline). Wallhaven, Unsplash and NASA pull from the internet. URL list and JSON API let you point at your own links. GitHub repo streams one image at a time from a public repo. Add as many as you like with the + button; the app picks one at random each time.</string>
+    <string name="help_change_t">How changing works</string>
+    <string name="help_change_b">Pick how often in Settings. The minimum is 15 minutes — Android batches background work to save battery, so the time can vary a little. The app is asleep between changes and does not drain your battery.</string>
+    <string name="help_now_t">The “Change now” button</string>
+    <string name="help_now_b">Tapping it changes the wallpaper straight away and shows a spinner while it works. Note: a manual change runs inside the app. If you tap Change now and then immediately force-close (swipe away) the app while it is still downloading, the change will not finish. Just open the app and tap again. Scheduled background changes are not affected by this.</string>
+    <string name="help_data_t">Saving data and battery</string>
+    <string name="help_data_b">Turn on “Only on Wi-Fi” to avoid mobile data, and “Only while charging” if you prefer. For Unsplash and NASA you can pick a lower image quality to use less data. “Prefetch next wallpaper” downloads the next one ahead of time so the change feels instant.</string>
+    <string name="help_history_t">History and favourites</string>
+    <string name="help_history_b">Every wallpaper applied is saved in History. Tap one to set it again, tap the star to keep it as a favourite, or the bin to remove it. Favourites are never deleted automatically.</string>
+    <string name="help_cache_t">Cache vs history</string>
+    <string name="help_cache_b">Downloaded files are kept in a cache. Delete cache (in Settings) frees space and is always safe — your history and favourites stay.</string>
+    <string name="help_privacy_t">Your privacy</string>
+    <string name="help_privacy_b">Everything stays on your phone. The app has no accounts, no ads, and no tracking. It only contacts the source you set up (for example Wallhaven) to fetch images. Any API keys you enter are stored on your device only and are kept out of cloud backups. The Local folder source needs no internet at all.</string>
+    <string name="help_perms_t">Permissions</string>
+    <string name="help_perms_b">Internet: to download from online sources. Set wallpaper: to change it. Notifications: to show the small “changing / changed” note. That is all.</string>
+</resources>

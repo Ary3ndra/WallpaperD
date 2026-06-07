@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data-extraction-rules>
+    <!-- Cloud backup (Google servers): exclude caches AND settings, since settings hold any
+         API tokens the user entered. Privacy over convenience. -->
+    <cloud-backup>
+        <exclude domain="file" path="wallpapers/" />
+        <exclude domain="file" path="prefetch/" />
+        <exclude domain="file" path="datastore/" />
+    </cloud-backup>
+    <!-- Direct device-to-device transfer stays local, so settings may carry over; still skip caches. -->
+    <device-transfer>
+        <exclude domain="file" path="wallpapers/" />
+        <exclude domain="file" path="prefetch/" />
+    </device-transfer>
+</data-extraction-rules>
