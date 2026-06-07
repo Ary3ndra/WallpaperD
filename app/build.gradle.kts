@@ -71,6 +71,18 @@ android {
     packaging { resources { excludes += "/META-INF/{AL2.0,LGPL2.1}" } }
 }
 
+// Names the built file "WallpaperD-<variant>.apk" (e.g. WallpaperD-debug.apk) instead of
+// Gradle's default "app-debug.apk" — this is the name users see on GitHub Releases and inside
+// the CI artifact zip.
+androidComponents {
+    onVariants(selector().all()) { variant ->
+        variant.outputs.forEach { output ->
+            (output as? com.android.build.api.variant.impl.VariantOutputImpl)
+                ?.outputFileName?.set("WallpaperD-${variant.name}.apk")
+        }
+    }
+}
+
 dependencies {
     val composeBom = platform("androidx.compose:compose-bom:2024.10.01")
     implementation(composeBom)

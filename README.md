@@ -1,76 +1,118 @@
-# WallpaperD (Android)
+# WallpaperD
 
-Android port of the GNOME `gnome-wallpaper-changer` extension. Pluggable wallpaper sources,
-timer-based rotation, cache that clears as images are consumed. Built to sit near-zero on the
-battery between changes.
+[![Build status](https://github.com/Ary3ndra/WallpaperD/actions/workflows/build.yml/badge.svg)](https://github.com/Ary3ndra/WallpaperD/actions/workflows/build.yml)
+[![Latest release](https://img.shields.io/github/v/release/Ary3ndra/WallpaperD?label=release)](https://github.com/Ary3ndra/WallpaperD/releases/latest)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-## Stack
-- Kotlin, Jetpack Compose, Material 3 (Material You dynamic color)
-- WorkManager for scheduling
-- DataStore (settings), Room (cache index)
-- OkHttp + kotlinx.serialization (network/JSON)
-- minSdk 26, targetSdk 35
+[![Download latest APK](https://img.shields.io/github/v/release/Ary3ndra/WallpaperD?style=for-the-badge&label=Download%20APK&color=4CAF50)](https://github.com/Ary3ndra/WallpaperD/releases/latest)
 
-## Build
-Open the folder in Android Studio (Ladybug+) and let it sync, or from a machine with the
-Android SDK:
+WallpaperD is an Android app that automatically changes your wallpaper on a schedule —
+picking images from a local folder, or fetching them from sites like Wallhaven, Unsplash,
+or NASA's Astronomy Picture of the Day. It runs quietly in the background, barely touches
+your battery, and keeps everything on your device: no accounts, no ads, no tracking.
 
+It's a spiritual port of the GNOME `gnome-wallpaper-changer` extension to Android.
+
+## What it can do
+
+- **Pick from many sources at once** — add a local folder, an online gallery, or a list of
+  image URLs, and WallpaperD rotates between whichever ones you enable.
+- **Change wallpapers on a timer** — set how often (minimum 15 minutes) and let it run.
+- **Remember your favourites** — every wallpaper it applies is saved to a History tab where
+  you can re-apply, star, or delete it later.
+- **Stay light on battery** — no background service running constantly, no wake locks; it
+  uses Android's built-in task scheduler so the OS decides the most efficient time to run.
+- **Work fully offline** — the "local folder" source needs no internet connection at all.
+- **Respect your privacy** — nothing leaves your device except requests to the image source
+  *you* choose to enable.
+
+## Where to get it
+
+- **Download a release APK**: check the [Releases](../../releases) page for the latest signed
+  build, or grab the latest debug build from the [Actions](../../actions) tab (build artifacts).
+- **Build it yourself**: see [Building from source](#building-from-source) below.
+
+WallpaperD requires **Android 8.0 (API 26)** or newer.
+
+## Available wallpaper sources
+
+| Source | What it does |
+|---|---|
+| **Local folder** | Picks a random image from a folder on your device. Nothing is downloaded or deleted — fully offline. |
+| **Wallhaven** | Pulls from wallhaven.cc using your search filters (query, category, purity, sorting). |
+| **Unsplash** | Random photos from unsplash.com. Needs a free personal access key from Unsplash. |
+| **NASA APOD** | NASA's daily Astronomy Picture of the Day. Works out of the box (rate-limited demo key), or use your own NASA API key for smoother access. |
+| **URL list** | You provide a list of direct image links; WallpaperD picks one at random each time. |
+| **JSON API** | Point it at any JSON endpoint that returns image URLs — useful for custom or self-hosted galleries. |
+| **GitHub repo** | Paste a link to a GitHub repo (or a folder within one) and it'll rotate through the images there. |
+
+You can add as many sources as you like from the **+** button on the Sources screen — each
+time the wallpaper changes, WallpaperD shuffles your enabled sources and uses the first one
+that successfully returns an image.
+
+## How it stays battery-friendly
+
+This is a core design goal, so it's worth explaining plainly:
+
+- WallpaperD doesn't run continuously in the background. It schedules a small periodic task
+  with Android's WorkManager, which the OS bundles together with other apps' scheduled work
+  to minimise how often your device has to wake up.
+- The shortest interval is 15 minutes — Android itself enforces this floor for battery
+  reasons, and exact timing can drift by design (that drift is what saves power).
+- It only asks for network access when you've enabled an online source — a folder-only setup
+  needs no internet permission at all.
+- The schedule survives reboots automatically; there's no need for the app to start at boot.
+
+## Privacy, in short
+
+- No accounts, ads, analytics, or tracking of any kind.
+- All your settings, history, and cached images stay on your device.
+- The app only talks to the network when fetching from a source *you've* enabled.
+- Any API keys you enter (e.g. for Unsplash) are stored locally and excluded from cloud backups.
+- All network traffic is HTTPS — plain HTTP is disabled at the OS level.
+
+## Troubleshooting
+
+If a source isn't working, open **Settings → Diagnostics** — it logs the exact reason
+(network error, HTTP status code, "no results for this filter", etc.) so you can adjust your
+source's settings accordingly. The same reason also shows up in the "Couldn't change
+wallpaper" notification if one appears.
+
+## Translations
+
+Want WallpaperD in your language? UI text lives in
+`app/src/main/res/values/strings.xml`. Copy that file to `values-<language-code>/strings.xml`
+(e.g. `values-fr` for French) and translate the entries — anything you don't translate falls
+back to English automatically. A Hindi translation already exists as a starting example in
+`values-hi/`. Don't forget to add your language code to `res/xml/locales_config.xml` so it
+shows up in Android's per-app language picker.
+
+---
+
+# Building from source
+
+This section is for developers who want to build, modify, or contribute to WallpaperD.
+
+## Tech stack
+- Kotlin, Jetpack Compose, Material 3 (dynamic color)
+- WorkManager (scheduling), DataStore (settings), Room (local database)
+- OkHttp + kotlinx.serialization (networking), Coil (image loading)
+- minSdk 26, targetSdk/compileSdk 35, JDK 17
+
+## Quick start
+Easiest path: open the project folder in **Android Studio** (Ladybug or newer), let it sync,
+and use **Build → Build APK(s)**. Android Studio fetches the SDK and generates the Gradle
+wrapper for you automatically.
+
+From the command line, with the Android SDK and JDK 17 already installed:
 ```bash
-gradle wrapper          # generate the wrapper if ./gradlew is missing
-./gradlew assembleDebug  # APK at app/build/outputs/apk/debug/
+gradle wrapper           # one-time: this repo ships without the wrapper jar (it's a binary)
+./gradlew assembleDebug  # -> app/build/outputs/apk/debug/app-debug.apk
+adb install -r app/build/outputs/apk/debug/app-debug.apk
 ```
 
-This package ships without the Gradle wrapper jar (binary). Android Studio adds it on import;
-the `gradle wrapper` command does the same from CLI.
-
-## Sources (= GNOME providers + more)
-| Type | Behaviour |
-|------|-----------|
-| FOLDER | Random image from a SAF-picked folder. No download, no deletion. (GNOME folder provider) |
-| WALLHAVEN | wallhaven.cc REST API. Fetches a page, caches it, applies one at a time, deletes each after use, refetches when empty. (GNOME wallhaven provider) |
-| UNSPLASH | unsplash.com random photo. Needs a free access key. Pings the download endpoint for photographer credit. Deleted after use. |
-| NASA_APOD | NASA Astronomy Picture of the Day. Prefers the HD url; skips video days. `DEMO_KEY` works but is rate-limited. |
-| URL_LIST | Random pick from your list of direct image URLs. Downloaded, deleted after use. |
-| JSON_API | Any JSON endpoint. Image URL pulled via a dot path (e.g. `data.0.url`). Custom headers. Deleted after use. |
-
-
-Add as many as you want from the + menu (each type is a one-tap preset). Each tick the worker
-shuffles enabled sources and uses the first that yields an image.
-
-## Wallhaven config
-`categories`/`purity` are 3-bit strings. Defaults `100`/`100` = General / SFW (matches GNOME
-default of SFW General 16x9). NSFW (`purity` last bit) requires an API key.
-
-## History
-Every applied wallpaper is copied into `filesDir/history/` and shown in the History tab. Tap a
-tile to re-apply it instantly (no fetch), star it to favourite, or delete it. The list keeps the
-newest 60 non-favourites; favourites are never pruned. History lives separately from the download
-cache, so "Delete cache" never touches it.
-
-## Cache
-Downloaded source files live in `filesDir/wallpapers/`. Settings -> Delete cache wipes that
-directory and the Room index. History and favourites are untouched.
-
-## Battery model (the important part)
-- No foreground service. No wakelock. No alarm holding the CPU.
-- One `PeriodicWorkRequest`. The OS batches it into Doze maintenance windows. The process is
-  dead between runs; it wakes, applies one wallpaper, exits.
-- WorkManager's floor is 15 min, so shorter intervals are clamped. Exact firing drifts by
-  design. That drift is what buys the battery savings.
-- Constraints: network is required only when an enabled source is online (a folder-only setup
-  asks for no network); optional Wi-Fi-only and charging-only gates.
-- Periodic work survives reboot (WorkManager restores it). No boot receiver needed.
-
-If you ever need sub-15-min or to-the-second firing, the only Android-sanctioned path is
-`AlarmManager.setExactAndAllowWhileIdle`, which costs battery and is rate-limited under Doze.
-Not wired up here on purpose.
-
-## License
-MIT, same as the upstream extension.
-
-## Building the APK
-
-### Local (Ubuntu, CLI)
+### Setting up a machine from scratch (Ubuntu/Debian)
+If you're starting with neither Android Studio nor the command-line SDK tools:
 ```bash
 sudo apt install -y openjdk-17-jdk unzip
 export ANDROID_HOME="$HOME/Android/Sdk"
@@ -83,90 +125,83 @@ export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
 yes | sdkmanager --licenses
 sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
 
-# Gradle 8.11.1 (apt's is too old) to bootstrap the wrapper, then build:
+# Gradle 8.11.1 (the version this project is pinned to — apt's is too old)
 curl -s "https://get.sdkman.io" | bash && source "$HOME/.sdkman/bin/sdkman-init.sh"
 sdk install gradle 8.11.1
 echo "sdk.dir=$ANDROID_HOME" > local.properties
 gradle wrapper
 ./gradlew assembleDebug
-# -> app/build/outputs/apk/debug/app-debug.apk
-adb install -r app/build/outputs/apk/debug/app-debug.apk
 ```
 
-### Online (GitHub Actions)
-Push the repo. `.github/workflows/build.yml` builds the debug APK on every push and uploads it
-as the `app-debug-apk` artifact. No local SDK needed. Also runnable from Actions -> Run workflow.
+### Building via GitHub Actions (no local setup at all)
+Every push triggers `.github/workflows/build.yml`, which builds a debug APK and uploads it as
+a downloadable artifact — see the **Actions** tab. You can also trigger it manually from
+**Actions → build → Run workflow**.
 
-### Android Studio
-Open the folder, let it sync (it fetches the SDK and generates the Gradle wrapper), then
-Build -> Build APK(s).
+> The debug APK from any of the above methods is signed with Android's auto-generated debug
+> key — it installs and runs fine for personal use, but can't be published to an app store or
+> updated over a differently-signed release build.
 
-Notes:
-- The debug APK is signed with the auto-generated debug key and installs directly. For a release
-  build you'd add a keystore and a `signingConfigs` block in `app/build.gradle.kts`.
-- This project deliberately omits the Gradle wrapper jar (binary). `gradle wrapper` or Android
-  Studio regenerates it.
+## Signing a release build
 
-## Signing & distribution
+If you want to distribute WallpaperD (outside an app store that signs for you), you'll need
+your own signing key:
 
-### Running for yourself
-The debug APK is auto-signed with the debug keystore and installs on any device (minSdk 26).
-Nothing to set up.
-
-### Self-distribution (GitHub Releases / your site)
-1. Create a keystore once and back it up. Android will not update an app signed with a different
-   key, so losing it means users must reinstall.
+1. **Generate a keystore once, and back it up somewhere safe** — if you lose it, you can never
+   publish an update under the same app identity; users would have to uninstall and reinstall.
    ```bash
    keytool -genkey -v -keystore wallpaperd.jks -alias wallpaperd \
      -keyalg RSA -keysize 2048 -validity 10000
    ```
-2. `cp keystore.properties.template keystore.properties` and fill in the four values.
-   `keystore.properties` and `*.jks` are gitignored.
-3. Build a signed release:
+2. Copy the template and fill in your details:
+   ```bash
+   cp keystore.properties.template keystore.properties
+   ```
+   Both `keystore.properties` and `*.jks` files are gitignored — they will never be committed.
+3. Build the signed release APK:
    ```bash
    ./gradlew assembleRelease
-   # -> app/build/outputs/apk/release/app-release.apk  (signed)
+   # -> app/build/outputs/apk/release/app-release.apk
    ```
-   With no `keystore.properties`, the release build is left unsigned (the F-Droid case).
+   Without a `keystore.properties`, the release build comes out unsigned (this is the expected
+   setup for F-Droid, which signs with its own key).
 
-### F-Droid
-You submit source + metadata; F-Droid builds and signs. Steps:
-1. Push to a public Git repo with the MIT LICENSE present.
-2. Tag the release commit: `git tag v1.0.0 && git push --tags`.
-3. Submit via the fdroiddata Submission Queue (reviewer does the rest) or open a merge request
-   adding `metadata/org.piarsenal.wallpaperd.yml` (sample in `fdroid/`). Edit the Repo URL.
-4. Bump `versionCode` (and tag) for each update.
+### Automated signed releases (GitHub Actions)
+`.github/workflows/release.yml` builds and signs a release APK whenever you push a tag like
+`v1.0.0`, then attaches it to a GitHub Release. It needs four repository secrets configured at
+**Settings → Secrets and variables → Actions**:
 
-The `dependenciesInfo { includeInApk/Bundle = false }` block is already set for reproducible
-builds. To keep one signature across F-Droid + GitHub: publish your signed APK at a stable URL,
-run `fdroid signatures <apk>`, and add `AllowedAPKSigningKeys` to the metadata so F-Droid verifies
-its build matches yours and publishes your signature instead of its own.
+| Secret | What goes in it |
+|---|---|
+| `KEYSTORE_B64` | Your `.jks` keystore file, base64-encoded (`base64 -w0 your.jks`) |
+| `KEYSTORE_PASSWORD` | The keystore's password |
+| `KEY_ALIAS` | The alias you chose when generating the key |
+| `KEY_PASSWORD` | The password for that specific key |
 
-Expect a `NonFreeNet` anti-feature label because Wallhaven/Unsplash/NASA/GitHub are third-party
-network services. The folder source works fully offline.
+### Submitting to F-Droid
+1. Make sure the repo is public with the MIT `LICENSE` present.
+2. Tag your release commit, e.g. `git tag v1.0.0 && git push --tags`.
+3. Submit via F-Droid's [Submission Queue](https://f-droid.org/), or open a merge request to
+   `fdroiddata` adding a metadata file (a starting template lives in `fdroid/`). Update the
+   `Repo` URL to point at your repository.
+4. Bump `versionCode` (and create a new tag) for every future update.
 
-## Diagnostics
-If a source misbehaves, Settings -> Diagnostics log shows the exact reason (HTTP code, parse
-error, download failure, or "0 results for this filter"). Failures also appear in the
-"Couldn't change wallpaper" notification. Use this to debug source configs.
+Expect F-Droid to label the app with a `NonFreeNet` anti-feature, since several sources
+(Wallhaven, Unsplash, NASA, GitHub) talk to third-party services. The local-folder source needs
+no network at all.
 
-## Roadmap (planned, not yet implemented)
-Tracked for future iterations:
-- Fit-to-screen resize + reject wrong-orientation images (landscape/portrait toggle).
-- Quick Settings tile to change wallpaper from the notification shade.
-- More sources: GitLab repos, DeviantArt, Alphacoders, and a "text file of image links" reader.
-- Source-addition UI polish.
+## Project structure, for contributors
+- **Sources** live in `provider/` — each one implements a single `next(): ProvidedImage?`
+  method. Adding a new source type means: add it to `SourceType`/`SourceConfig`, write a
+  provider, register it in `ProviderFactory`, and add it to the source editor UI.
+- **The wallpaper-change pipeline** lives in `wallpaper/WallpaperEngine` — it tries enabled
+  sources in random order, applies the first successful image, records history, and logs
+  every step.
+- **Scheduling** is handled by WorkManager (`work/Scheduler` + `ChangeWallpaperWorker`).
+- **Diagnostics**: every failure is logged to an in-app file viewable from
+  Settings → Diagnostics, so issues can be debugged without a debugger attached.
 
-## Privacy & security summary
-- No accounts, no ads, no analytics, no tracking. All data stays on device.
-- The app only contacts the source you configure (e.g. Wallhaven) to fetch images.
-- API keys you enter are stored locally and excluded from cloud backups.
-- HTTPS-only (cleartext traffic disabled). Minimal permissions: internet, set wallpaper, notifications.
-- The Local folder source needs no internet.
+See `CLAUDE.md` for a fuller architectural breakdown and the current roadmap.
 
-## Translations
-UI strings live in `app/src/main/res/values/strings.xml`. To add a language, copy it to
-`values-<code>/strings.xml` (e.g. `values-fr`) and translate; missing keys fall back to English.
-A Hindi stub is in `values-hi/`. Add the locale to `res/xml/locales_config.xml` so it appears in
-Android's per-app language picker. (Home, Settings, Help, and navigation are already externalised;
-the source editor still has inline English to migrate.)
+## License
+MIT — see [LICENSE](LICENSE). Same license as the upstream GNOME extension this was inspired by.
