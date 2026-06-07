@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!-- Regenerable, and tokens live in datastore — keep all of it out of cloud backups. -->
+    <exclude domain="file" path="wallpapers/" />
+    <exclude domain="file" path="prefetch/" />
+    <exclude domain="file" path="datastore/" />
+</full-backup-content>
