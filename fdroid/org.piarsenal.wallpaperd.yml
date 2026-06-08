@@ -4,13 +4,13 @@ Categories:
   - Theming
 License: MIT
 AuthorName: PiArsenal
-SourceCode: https://github.com/YOURUSER/WallpaperD
-IssueTracker: https://github.com/YOURUSER/WallpaperD/issues
+SourceCode: https://github.com/Ary3ndra/WallpaperD
+IssueTracker: https://github.com/Ary3ndra/WallpaperD/issues
 
 AutoName: WallpaperD
 
 RepoType: git
-Repo: https://github.com/YOURUSER/WallpaperD.git
+Repo: https://github.com/Ary3ndra/WallpaperD.git
 
 # Online sources depend on third-party network services; folder source is fully offline.
 AntiFeatures:
