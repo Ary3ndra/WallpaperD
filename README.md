@@ -13,6 +13,8 @@ your battery, and keeps everything on your device: no accounts, no ads, no track
 
 It's a spiritual port of the GNOME `gnome-wallpaper-changer` extension to Android.
 
+**THIS ENTIRE PROJECT IS BUILD BY CLAUDE CODE AS I WANTED THE WALLPAPER CHANGER APPLICATION FOR MY PHONE.**
+
 
 ## What it can do
 
