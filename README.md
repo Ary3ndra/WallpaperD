@@ -202,7 +202,5 @@ no network at all.
 - **Diagnostics**: every failure is logged to an in-app file viewable from
   Settings → Diagnostics, so issues can be debugged without a debugger attached.
 
-See `CLAUDE.md` for a fuller architectural breakdown and the current roadmap.
-
 ## License
 MIT — see [LICENSE](LICENSE). Same license as the upstream GNOME extension this was inspired by.
