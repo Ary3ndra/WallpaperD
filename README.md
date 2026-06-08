@@ -13,6 +13,8 @@ your battery, and keeps everything on your device: no accounts, no ads, no track
 
 It's a spiritual port of the GNOME `gnome-wallpaper-changer` extension to Android.
 
+**THIS ENTIRE PROJECT IS BUILD BY CLAUDE CODE AS I WANTED THE WALLPAPER CHANGER APPLICATION FOR MY PHONE.**
+
 
 ## What it can do
 
@@ -201,8 +203,6 @@ no network at all.
 - **Scheduling** is handled by WorkManager (`work/Scheduler` + `ChangeWallpaperWorker`).
 - **Diagnostics**: every failure is logged to an in-app file viewable from
   Settings → Diagnostics, so issues can be debugged without a debugger attached.
-
-See `CLAUDE.md` for a fuller architectural breakdown and the current roadmap.
 
 ## License
 MIT — see [LICENSE](LICENSE). Same license as the upstream GNOME extension this was inspired by.
