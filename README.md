@@ -13,6 +13,7 @@ your battery, and keeps everything on your device: no accounts, no ads, no track
 
 It's a spiritual port of the GNOME `gnome-wallpaper-changer` extension to Android.
 
+
 ## What it can do
 
 - **Pick from many sources at once** — add a local folder, an online gallery, or a list of
