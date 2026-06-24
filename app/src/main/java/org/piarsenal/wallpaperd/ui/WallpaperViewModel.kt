@@ -15,6 +15,7 @@ import org.piarsenal.wallpaperd.data.CacheManager
 import org.piarsenal.wallpaperd.data.HistoryManager
 import org.piarsenal.wallpaperd.data.SettingsRepository
 import org.piarsenal.wallpaperd.data.SourceConfig
+import org.piarsenal.wallpaperd.data.WallOrientation
 import org.piarsenal.wallpaperd.data.db.AppDatabase
 import org.piarsenal.wallpaperd.data.db.AppliedWallpaper
 import org.piarsenal.wallpaperd.log.Logger
@@ -64,6 +65,10 @@ class WallpaperViewModel(app: Application) : AndroidViewModel(app) {
     fun setAvoidRepeats(on: Boolean) = edit { it.copy(avoidRepeats = on) }
     fun setPrefetch(on: Boolean) = edit { it.copy(prefetchEnabled = on) }
     fun setCacheLimitMb(mb: Long) = edit { it.copy(cacheLimitMb = mb.coerceAtLeast(0)) }
+    fun setFitToScreen(on: Boolean) = edit { it.copy(fitToScreen = on) }
+    fun setRejectIncompatible(on: Boolean) = edit { it.copy(rejectIncompatible = on) }
+    fun setOrientation(o: WallOrientation) = edit { it.copy(orientation = o) }
+    fun resizeCurrent() = WallpaperController.resizeCurrent(getApplication())
 
     fun upsertSource(source: SourceConfig) = edit { s ->
         val list = s.sources.toMutableList()

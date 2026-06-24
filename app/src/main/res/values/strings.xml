@@ -23,6 +23,7 @@
     <string name="home_battery_note">Changes run in short windows the system schedules. Nothing stays awake between changes.</string>
     <string name="home_change_now">Change now</string>
     <string name="home_changing">Changing…</string>
+    <string name="home_resize">Resize to fit screen</string>
 
     <!-- Settings -->
     <string name="settings_title">Settings</string>
@@ -35,6 +36,9 @@
     <string name="settings_notify">Notify on change</string>
     <string name="settings_avoid_repeats">Avoid immediate repeats</string>
     <string name="settings_prefetch">Prefetch next wallpaper</string>
+    <string name="settings_fit_screen">Auto-fit wallpapers to screen</string>
+    <string name="settings_reject">Reject wallpapers that don\'t fit</string>
+    <string name="settings_orientation">Keep orientation</string>
     <string name="settings_cache">Downloaded cache</string>
     <string name="settings_cache_size">%1$s MB on disk</string>
     <string name="settings_delete_cache">Delete cache</string>

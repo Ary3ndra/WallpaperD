@@ -35,6 +35,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import org.piarsenal.wallpaperd.R
+import org.piarsenal.wallpaperd.data.WallOrientation
 
 @Composable
 fun SettingsScreen(vm: WallpaperViewModel) {
@@ -81,6 +82,20 @@ fun SettingsScreen(vm: WallpaperViewModel) {
                 toggle(stringResource(R.string.settings_notify), s.notifyOnChange, vm::setNotify)
                 toggle(stringResource(R.string.settings_avoid_repeats), s.avoidRepeats, vm::setAvoidRepeats)
                 toggle(stringResource(R.string.settings_prefetch), s.prefetchEnabled, vm::setPrefetch)
+                toggle(stringResource(R.string.settings_fit_screen), s.fitToScreen, vm::setFitToScreen)
+                toggle(stringResource(R.string.settings_reject), s.rejectIncompatible, vm::setRejectIncompatible)
+                if (s.rejectIncompatible) {
+                    Text(stringResource(R.string.settings_orientation), style = MaterialTheme.typography.bodyMedium)
+                    FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        WallOrientation.entries.forEach { o ->
+                            FilterChip(
+                                selected = s.orientation == o,
+                                onClick = { vm.setOrientation(o) },
+                                label = { Text(o.name.lowercase().replaceFirstChar { it.uppercase() }) }
+                            )
+                        }
+                    }
+                }
             }
         }
 

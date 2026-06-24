@@ -9,9 +9,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AspectRatio
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
@@ -90,6 +92,15 @@ fun HomeScreen(vm: WallpaperViewModel) {
                 Icon(Icons.Filled.Refresh, contentDescription = null)
                 Text("  " + stringResource(R.string.home_change_now))
             }
+        }
+
+        OutlinedButton(
+            onClick = { vm.resizeCurrent() },
+            enabled = !changing,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Icon(Icons.Filled.AspectRatio, contentDescription = null)
+            Text("  " + stringResource(R.string.home_resize))
         }
     }
 }

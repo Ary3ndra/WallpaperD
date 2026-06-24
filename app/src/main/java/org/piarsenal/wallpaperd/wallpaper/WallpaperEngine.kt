@@ -3,8 +3,10 @@ package org.piarsenal.wallpaperd.wallpaper
 import android.content.Context
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.piarsenal.wallpaperd.data.AppSettings
 import org.piarsenal.wallpaperd.data.HistoryManager
 import org.piarsenal.wallpaperd.data.SettingsRepository
+import org.piarsenal.wallpaperd.data.WallOrientation
 import org.piarsenal.wallpaperd.data.db.AppDatabase
 import org.piarsenal.wallpaperd.log.Logger
 import org.piarsenal.wallpaperd.provider.ProvidedImage
@@ -72,6 +74,10 @@ class WallpaperEngine(private val context: Context) {
     private suspend fun applyAndFinish(image: ProvidedImage, sourceName: String, notify: Boolean): Boolean {
         val repo = SettingsRepository(context)
         val settings = repo.current()
+        if (settings.rejectIncompatible && !orientationOk(image, settings)) {
+            Logger.w(context, "Engine", "rejected $sourceName: orientation/size mismatch")
+            return false
+        }
         return try {
             WallpaperSetter(context).apply(image, settings)
             HistoryManager.record(context, sourceName, image.label, image.openStream)
@@ -83,6 +89,20 @@ class WallpaperEngine(private val context: Context) {
         } catch (t: Throwable) {
             Logger.e(context, "Engine", "apply failed for $sourceName", t)
             false
+        }
+    }
+
+    private fun orientationOk(image: ProvidedImage, settings: AppSettings): Boolean {
+        val b = android.graphics.BitmapFactory.Options().apply { inJustDecodeBounds = true }
+        runCatching { image.openStream().use { android.graphics.BitmapFactory.decodeStream(it, null, b) } }
+        val w = b.outWidth; val h = b.outHeight
+        if (w <= 0 || h <= 0) return false
+        val dm = context.resources.displayMetrics
+        if (w < dm.widthPixels / 2 && h < dm.heightPixels / 2) return false
+        return when (settings.orientation) {
+            WallOrientation.LANDSCAPE -> w >= h
+            WallOrientation.PORTRAIT -> h >= w
+            WallOrientation.ANY -> true
         }
     }
 }

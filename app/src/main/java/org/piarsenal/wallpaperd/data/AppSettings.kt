@@ -25,6 +25,9 @@ data class AppSettings(
     val avoidRepeats: Boolean = true,    // skip the immediately previous image when alternatives exist
     val prefetchEnabled: Boolean = true, // download the next wallpaper ahead of time
     val cacheLimitMb: Long = 500,        // cap on downloaded cache size; oldest pruned past this
+    val fitToScreen: Boolean = false,
+    val rejectIncompatible: Boolean = false,
+    val orientation: WallOrientation = WallOrientation.ANY,
     val lastAppliedKey: String = "",     // identity of the last applied image (for avoidRepeats)
     val prefetched: PrefetchedImage? = null,
     val sources: List<SourceConfig> = emptyList()
