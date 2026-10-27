@@ -24,12 +24,11 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - name: Android SDK
-        uses: android-actions/setup-android@v3
-      - name: Ensure target platform + build-tools
+      - name: Android SDK packages
         run: |
-          yes | sdkmanager --licenses >/dev/null 2>&1 || true
-          sdkmanager "platforms;android-35" "build-tools;35.0.0" >/dev/null
+          SDKM=$(ls -d "$ANDROID_HOME"/cmdline-tools/*/bin/sdkmanager | sort -V | tail -1)  # newest cmdline-tools on runner
+          yes | "$SDKM" --licenses >/dev/null 2>&1 || true
+          "$SDKM" "platforms;android-35" "build-tools;35.0.0" >/dev/null
       - name: Gradle cache
         uses: gradle/actions/setup-gradle@v4
       - name: Build debug APK
